@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AreasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Areas">
+          <Key>
+            <PropertyRef Name="IDArea" />
+          </Key>
+          <Property Name="IDArea" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDSucursal" Type="int" Nullable="false" />
+          <Property Name="DescArea" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reservacion">
+          <Key>
+            <PropertyRef Name="IDReservacion" />
+          </Key>
+          <Property Name="IDReservacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDSala" Type="int" Nullable="false" />
+          <Property Name="IDUsuario" Type="int" Nullable="false" />
+          <Property Name="DescReserv" Type="varchar" MaxLength="50" />
+          <Property Name="DTInicio" Type="datetime" />
+          <Property Name="DTFin" Type="datetime" />
+          <Property Name="DTRegistro" Type="datetime" />
+          <Property Name="Estatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Salas">
+          <Key>
+            <PropertyRef Name="IDSala" />
+          </Key>
+          <Property Name="IDSala" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDArea" Type="int" Nullable="false" />
+          <Property Name="DescSala" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EspecificaHorario" Type="bit" Nullable="false" />
+          <Property Name="HoraInicial" Type="time" Precision="7" />
+          <Property Name="HoraFinal" Type="time" Precision="7" />
+          <Property Name="Observaciones" Type="varchar(max)" />
+          <Property Name="Estatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sucursales">
+          <Key>
+            <PropertyRef Name="IDSucursal" />
+          </Key>
+          <Property Name="IDSucursal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DescSucursal" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="IDUsuario" />
+          </Key>
+          <Property Name="IDUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UsuarioNumeroExt" Type="int" />
+          <Property Name="UsuarioNombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UsuarioApellido1" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="UsuarioApellido2" Type="varchar" MaxLength="50" />
+          <Property Name="EmpleadoEmail" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Pass" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Tipo" Type="int" Nullable="false" />
+          <Property Name="Estatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Areas_Sucursales">
+          <End Role="Sucursales" Type="Self.Sucursales" Multiplicity="1" />
+          <End Role="Areas" Type="Self.Areas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursales">
+              <PropertyRef Name="IDSucursal" />
+            </Principal>
+            <Dependent Role="Areas">
+              <PropertyRef Name="IDSucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservacion_Salas">
+          <End Role="Salas" Type="Self.Salas" Multiplicity="1" />
+          <End Role="Reservacion" Type="Self.Reservacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Salas">
+              <PropertyRef Name="IDSala" />
+            </Principal>
+            <Dependent Role="Reservacion">
+              <PropertyRef Name="IDSala" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservacion_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Reservacion" Type="Self.Reservacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="IDUsuario" />
+            </Principal>
+            <Dependent Role="Reservacion">
+              <PropertyRef Name="IDUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Salas_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+          <End Role="Salas" Type="Self.Salas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="IDArea" />
+            </Principal>
+            <Dependent Role="Salas">
+              <PropertyRef Name="IDArea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AreasModelStoreContainer">
+          <EntitySet Name="Areas" EntityType="Self.Areas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservacion" EntityType="Self.Reservacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Salas" EntityType="Self.Salas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sucursales" EntityType="Self.Sucursales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Areas_Sucursales" Association="Self.FK_Areas_Sucursales">
+            <End Role="Sucursales" EntitySet="Sucursales" />
+            <End Role="Areas" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservacion_Salas" Association="Self.FK_Reservacion_Salas">
+            <End Role="Salas" EntitySet="Salas" />
+            <End Role="Reservacion" EntitySet="Reservacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservacion_Usuarios" Association="Self.FK_Reservacion_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Reservacion" EntitySet="Reservacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Salas_Areas" Association="Self.FK_Salas_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Salas" EntitySet="Salas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AreasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Areas">
+          <Key>
+            <PropertyRef Name="IDArea" />
+          </Key>
+          <Property Name="IDArea" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDSucursal" Type="Int32" Nullable="false" />
+          <Property Name="DescArea" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Sucursales" Relationship="Self.FK_Areas_Sucursales" FromRole="Areas" ToRole="Sucursales" />
+          <NavigationProperty Name="Salas" Relationship="Self.FK_Salas_Areas" FromRole="Areas" ToRole="Salas" />
+        </EntityType>
+        <EntityType Name="Reservacion">
+          <Key>
+            <PropertyRef Name="IDReservacion" />
+          </Key>
+          <Property Name="IDReservacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDSala" Type="Int32" Nullable="false" />
+          <Property Name="IDUsuario" Type="Int32" Nullable="false" />
+          <Property Name="DescReserv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DTInicio" Type="DateTime" Precision="3" />
+          <Property Name="DTFin" Type="DateTime" Precision="3" />
+          <Property Name="DTRegistro" Type="DateTime" Precision="3" />
+          <Property Name="Estatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Salas" Relationship="Self.FK_Reservacion_Salas" FromRole="Reservacion" ToRole="Salas" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Reservacion_Usuarios" FromRole="Reservacion" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Salas">
+          <Key>
+            <PropertyRef Name="IDSala" />
+          </Key>
+          <Property Name="IDSala" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDArea" Type="Int32" Nullable="false" />
+          <Property Name="DescSala" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EspecificaHorario" Type="Boolean" Nullable="false" />
+          <Property Name="HoraInicial" Type="Time" Precision="7" />
+          <Property Name="HoraFinal" Type="Time" Precision="7" />
+          <Property Name="Observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Estatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_Salas_Areas" FromRole="Salas" ToRole="Areas" />
+          <NavigationProperty Name="Reservacion" Relationship="Self.FK_Reservacion_Salas" FromRole="Salas" ToRole="Reservacion" />
+        </EntityType>
+        <EntityType Name="Sucursales">
+          <Key>
+            <PropertyRef Name="IDSucursal" />
+          </Key>
+          <Property Name="IDSucursal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DescSucursal" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_Areas_Sucursales" FromRole="Sucursales" ToRole="Areas" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="IDUsuario" />
+          </Key>
+          <Property Name="IDUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UsuarioNumeroExt" Type="Int32" />
+          <Property Name="UsuarioNombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UsuarioApellido1" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UsuarioApellido2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmpleadoEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pass" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tipo" Type="Int32" Nullable="false" />
+          <Property Name="Estatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Reservacion" Relationship="Self.FK_Reservacion_Usuarios" FromRole="Usuarios" ToRole="Reservacion" />
+        </EntityType>
+        <Association Name="FK_Areas_Sucursales">
+          <End Role="Sucursales" Type="Self.Sucursales" Multiplicity="1" />
+          <End Role="Areas" Type="Self.Areas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursales">
+              <PropertyRef Name="IDSucursal" />
+            </Principal>
+            <Dependent Role="Areas">
+              <PropertyRef Name="IDSucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Salas_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+          <End Role="Salas" Type="Self.Salas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="IDArea" />
+            </Principal>
+            <Dependent Role="Salas">
+              <PropertyRef Name="IDArea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservacion_Salas">
+          <End Role="Salas" Type="Self.Salas" Multiplicity="1" />
+          <End Role="Reservacion" Type="Self.Reservacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Salas">
+              <PropertyRef Name="IDSala" />
+            </Principal>
+            <Dependent Role="Reservacion">
+              <PropertyRef Name="IDSala" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservacion_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Reservacion" Type="Self.Reservacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="IDUsuario" />
+            </Principal>
+            <Dependent Role="Reservacion">
+              <PropertyRef Name="IDUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AreasEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Areas" EntityType="Self.Areas" />
+          <EntitySet Name="Reservacion" EntityType="Self.Reservacion" />
+          <EntitySet Name="Salas" EntityType="Self.Salas" />
+          <EntitySet Name="Sucursales" EntityType="Self.Sucursales" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <AssociationSet Name="FK_Areas_Sucursales" Association="Self.FK_Areas_Sucursales">
+            <End Role="Sucursales" EntitySet="Sucursales" />
+            <End Role="Areas" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Salas_Areas" Association="Self.FK_Salas_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Salas" EntitySet="Salas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservacion_Salas" Association="Self.FK_Reservacion_Salas">
+            <End Role="Salas" EntitySet="Salas" />
+            <End Role="Reservacion" EntitySet="Reservacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservacion_Usuarios" Association="Self.FK_Reservacion_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Reservacion" EntitySet="Reservacion" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AreasModelStoreContainer" CdmEntityContainer="AreasEntities">
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="AreasModel.Areas">
+              <MappingFragment StoreEntitySet="Areas">
+                <ScalarProperty Name="IDArea" ColumnName="IDArea" />
+                <ScalarProperty Name="IDSucursal" ColumnName="IDSucursal" />
+                <ScalarProperty Name="DescArea" ColumnName="DescArea" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservacion">
+            <EntityTypeMapping TypeName="AreasModel.Reservacion">
+              <MappingFragment StoreEntitySet="Reservacion">
+                <ScalarProperty Name="IDReservacion" ColumnName="IDReservacion" />
+                <ScalarProperty Name="IDSala" ColumnName="IDSala" />
+                <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
+                <ScalarProperty Name="DescReserv" ColumnName="DescReserv" />
+                <ScalarProperty Name="DTInicio" ColumnName="DTInicio" />
+                <ScalarProperty Name="DTFin" ColumnName="DTFin" />
+                <ScalarProperty Name="DTRegistro" ColumnName="DTRegistro" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Salas">
+            <EntityTypeMapping TypeName="AreasModel.Salas">
+              <MappingFragment StoreEntitySet="Salas">
+                <ScalarProperty Name="IDSala" ColumnName="IDSala" />
+                <ScalarProperty Name="IDArea" ColumnName="IDArea" />
+                <ScalarProperty Name="DescSala" ColumnName="DescSala" />
+                <ScalarProperty Name="EspecificaHorario" ColumnName="EspecificaHorario" />
+                <ScalarProperty Name="HoraInicial" ColumnName="HoraInicial" />
+                <ScalarProperty Name="HoraFinal" ColumnName="HoraFinal" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sucursales">
+            <EntityTypeMapping TypeName="AreasModel.Sucursales">
+              <MappingFragment StoreEntitySet="Sucursales">
+                <ScalarProperty Name="IDSucursal" ColumnName="IDSucursal" />
+                <ScalarProperty Name="DescSucursal" ColumnName="DescSucursal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="AreasModel.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
+                <ScalarProperty Name="UsuarioNumeroExt" ColumnName="UsuarioNumeroExt" />
+                <ScalarProperty Name="UsuarioNombre" ColumnName="UsuarioNombre" />
+                <ScalarProperty Name="UsuarioApellido1" ColumnName="UsuarioApellido1" />
+                <ScalarProperty Name="UsuarioApellido2" ColumnName="UsuarioApellido2" />
+                <ScalarProperty Name="EmpleadoEmail" ColumnName="EmpleadoEmail" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<AgendaSalas.Models.Sucursales>
+
+@{
+    ViewBag.Title = "Sucursales";
+}
+
+<h3>Administración de Sucursales</h3>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-6">
+            <a href="@Url.Action("Create", "Sucursales")" data-toggle="tooltip" title="Nuevo Usuario" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo
+            </a>
+        </div>
+        <div class="col-md-5"></div>
+        <div class="col-md-1">
+            <a href="@Url.Action("Menu", "Home")" data-toggle="tooltip" title="Volver al Menu" class="btn btn-default">
+                <span class="glyphicon glyphicon-step-backward"></span> Atras
+            </a>
+        </div>
+    </div>
+</div>
+
+<table id="sucursaltab" class="display" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DescSucursal)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescSucursal)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", "Sucursales", new { id = item.IDSucursal })" data-toggle="tooltip" title="Editar Sucursal" class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    <a href="@Url.Action("Details", "Sucursales", new { id = item.IDSucursal })" data-toggle="tooltip" title="Detalles de Sucursal" class="btn btn-default">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    <a href="@Url.Action("Delete", "Sucursales", new { id = item.IDSucursal })" data-toggle="tooltip" title="Eliminar Sucursal" class="btn btn-default">
+                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#sucursaltab').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+            },
+            scrollY: '50vh',
+            scrollCollapse: true,
+            paging: false
+        });
+    });
+</script>

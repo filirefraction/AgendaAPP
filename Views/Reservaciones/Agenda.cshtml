@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Reservaciones";
+}
+
+<div id="calendar"></div>
+
+@*FullCalendar v3.4.0*@
+<link href="~/Content/fullcalendar.min.css" rel="stylesheet" />
+<link href="~/Content/fullcalendar.print.css" rel="stylesheet" media="print" />
+
+
+<script src="~/scripts/moment.min.js"></script>
+<script src="~/scripts/fullcalendar.min.js"></script>
+<script src="~/scripts/locale-all.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        var eventos = [];
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetEvents", "Reservaciones")' + '/' + @ViewBag.idsala,
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    eventos.push({
+                        eventID: v.id,
+                        title: v.titulo,
+                        description: v.descripcion,
+                        start: moment(v.inicio),
+                        end: v.fin != null ? moment(v.fin) : null,
+                        color: 'Deepskyblue',//v.temacolor,
+                        allDay: v.diacompleto,
+                        userID: v.userid,
+                        userName: v.username
+                    });
+                })
+                GenerateCalender(eventos);
+            },
+            error: function (error) {
+                alert('Failed');
+            }
+        })
+
+    });
+
+      function GenerateCalender(Eventos) {
+            $('#calendar').fullCalendar('destroy');
+            $('#calendar').fullCalendar({
+                locale: 'es',
+                contentHeight: 400,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    left: 'prev,next,today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay,agenda'
+                },
+                eventLimit: true,
+                eventColor: '#378006',
+                events: Eventos,
+                eventClick: function (calEvent, jsEvent, view) {
+                    VerReserva(calEvent.eventID);
+                }
+            });
+        }
+</script>
+

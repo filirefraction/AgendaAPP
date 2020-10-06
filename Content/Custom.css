@@ -1,0 +1,61 @@
+﻿
+.AlertaSuccess {
+    color: darkseagreen;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.AlertaDanger {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.wrapperP {
+    /*border: 2px solid #f76707;*/
+    border-radius: 5px;
+    /*background-color: #fff4e6;*/
+}
+
+    .wrapperP > a {
+        border-radius: 10px;
+        background-color: #6898d2;
+        padding: 1em;
+        color: #d9480f;
+        text-align: center;
+        font-size: large;
+        padding-top: 60px;
+        color: #ffffff;
+    }
+
+.wrapperP {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, minmax(150px, auto));
+    grid-gap: 10px;
+}
+
+
+.wrapper {
+    /*border: 2px solid #f76707;*/
+    border-radius: 5px;
+    /*background-color: #fff4e6;*/
+}
+
+    .wrapper > a {
+        border-radius: 10px;
+        background-color: #6898d2;
+        padding: 1em;
+        color: #d9480f;
+        text-align: center;
+        font-size: large;
+        padding-top: 60px;
+        color: #ffffff;
+    }
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(1, minmax(150px, auto));
+    grid-gap: 10px;
+}

@@ -1,0 +1,82 @@
+﻿@model AgendaSalas.Models.Salas
+
+@{
+    ViewBag.Title = "Salas";
+}
+
+<div class="form-group">
+    <div class="col-md-6">
+        <h4>Detalles de Sala</h4>
+    </div>
+    <div class="col-md-5"></div>
+    <div class="col-md-1">
+        <a href="@Url.Action("Index", "Salas")" data-toggle="tooltip" title="Volver al Menu" class="btn btn-default">
+            <span class="glyphicon glyphicon-step-backward"></span> Atras
+        </a>
+    </div>
+</div>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DescSala)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescSala)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EspecificaHorario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EspecificaHorario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HoraInicial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoraInicial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HoraFinal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoraFinal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observaciones)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observaciones)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Areas.DescArea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Areas.DescArea)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.IDSala })
+</p>

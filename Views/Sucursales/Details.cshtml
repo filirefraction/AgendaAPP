@@ -1,0 +1,35 @@
+﻿@model AgendaSalas.Models.Sucursales
+
+@{
+    ViewBag.Title = "Sucursales";
+}
+
+<div class="form-group">
+    <div class="col-md-6">
+        <h4>Detalles de Sucursal</h4>
+    </div>
+    <div class="col-md-5"></div>
+    <div class="col-md-1">
+        <a href="@Url.Action("Index", "Sucursales")" data-toggle="tooltip" title="Volver al Menu" class="btn btn-default">
+            <span class="glyphicon glyphicon-step-backward"></span> Atras
+        </a>
+    </div>
+</div>
+
+<div>
+    <h4>Detalles de Sucursal</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DescSucursal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescSucursal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.IDSucursal }) 
+</p>

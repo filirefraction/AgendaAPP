@@ -1,0 +1,229 @@
+﻿@model IEnumerable<AgendaSalas.Models.Reservacion>
+
+@{
+    ViewBag.Title = "Reservaciones";
+}
+
+<h3>Administración de Reservaciones</h3>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-4">
+            @Html.DropDownList("ListSucursal", (IEnumerable<SelectListItem>)ViewBag.ListSucursal, "1.- Elige una Sucursal", htmlAttributes: new { @class = "form-control" })
+            <span class="AlertaDanger" id="ListSucursalVal"></span>
+        </div>
+        <div class="col-md-4">
+            <select id="ListArea" class="form-control">
+                <option value="">2.- Elige una Area</option>
+            </select>
+            <span class="AlertaDanger" id="ListAreaVal"></span>
+        </div>
+        <div class="col-md-4">
+            <select id="ListSala" class="form-control">
+                <option value="">3.- Elige una Sala</option>
+            </select>
+            <span class="AlertaDanger" id="ListSalaVal"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-1">
+            <a id="NuevaReserva" data-toggle="tooltip" title="Nueva Reservación" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo
+            </a>
+        </div>
+        <div class="col-md-10"></div>
+        <div class="col-md-1">
+            <a href="@Url.Action("Menu", "Home")" data-toggle="tooltip" title="Volver al Menu" class="btn btn-default">
+                <span class="glyphicon glyphicon-step-backward"></span> Atras
+            </a>
+        </div>
+    </div>
+
+</div>
+<div  id="AgendaBody"></div>
+
+
+<div id="OperModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" id="OperBody">
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#ListSucursal').selectpicker({
+            liveSearch: true
+        });
+
+        $('#ListArea').selectpicker({
+            liveSearch: true
+        });
+
+        $('#ListSala').selectpicker({
+            liveSearch: true
+        });
+
+        $('#ListSucursal').change(function () {
+
+            if ($('#ListSucursal').val() != '') {
+                var IDSucursal = $('#ListSucursal').val();
+                $('#ListSucursalVal').html('');
+                ObtenerAreas(IDSucursal);
+            }
+            else {
+                $('#ListSucursalVal').html('');
+                $('#ListSucursalVal').append('Debe elegir una Surcursal para ver las Areas')
+            }
+
+        });
+
+
+        $('#ListArea').change(function () {
+
+            if ($('#ListArea').val() != '') {
+                var IDArea = $('#ListArea').val();
+                $('#ListAreaVal').html('');
+                ObtenerSalas(IDArea);
+            }
+            else {
+                $('#ListAreaVal').html('');
+                $('#ListAreaVal').append('Debe elegir una Area para ver las Salas')
+            }
+
+        });
+
+        $('#ListSala').change(function () {
+
+            if ($('#ListSala').val() != '') {
+                var IDSala = $('#ListSala').val();
+                $('#ListSalaVal').html('');
+                console.log("cargar Agenda");
+                VerAgenda(IDSala);
+            }
+            else {
+                $('#ListSalaVal').html('');
+                $('#ListSalaVal').append('Debe elegir una Area para ver las Salas')
+            }
+
+        });
+
+
+        $("#NuevaReserva").click(function () {
+            var IDSala = $("#ListSala").val();
+
+            if ($("#ListSala").val() == '') {
+                $("#ListSalaVal").html('');
+                $("#ListSalaVal").append('Debe elegir una Sala para realizar una reservación')
+            }
+            else {
+                $("#ListSalaVal").html('');
+            }
+
+            if ($('#ListSala').val() != '') {
+                CrearReserva(IDSala);
+            }
+
+        });
+
+    });
+
+    function ObtenerAreas(id)
+    {
+        $.ajax({
+            url: '@Url.Action("ListaAreas", "Reservaciones")' + '/' + id,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (Data) {
+                $("#ListArea").html('');
+                $("#ListArea").append('<option value =""> 2.- Elige una Area</option>');
+                $.each(Data,
+                    function (index, propie) {
+                        var content = '<option value="' + propie.idarea + '">' + propie.descarea + '</option>';
+                        $("#ListArea").append(content);
+                    });
+                $('#ListArea').selectpicker('refresh');
+            },
+            error: function () {
+                console.log("No pudo acceder al metodo");
+            }
+        });
+    }
+
+    function ObtenerSalas(id)
+    {
+        $.ajax({
+            url: '@Url.Action("ListaSalas", "Reservaciones")' + '/' + id,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (Data) {
+                $("#ListSala").html('');
+                $("#ListSala").append('<option value =""> 3.- Elige una Sala</option>');
+                $.each(Data,
+                    function (index, propie) {
+                        var content = '<option value="' + propie.idsala + '">' + propie.descsala + '</option>';
+                        $("#ListSala").append(content);
+                    });
+                $('#ListSala').selectpicker('refresh');
+            },
+            error: function () {
+                console.log("No pudo acceder al metodo");
+            }
+        });
+    }
+
+    function CrearReserva(id) {
+        $("#OperBody").html('');
+        $("#OperBody").load('@Url.Action("Create", "Reservaciones")' + '/' + id);
+        $('#OperModal').modal('show');
+    }
+
+    function EditaReserva(id) {
+        $("#OperBody").html('');
+        $("#OperBody").load('@Url.Action("Edit", "Reservaciones")' + '/' + id);
+        $('#OperModal').modal('show');
+    }
+
+    function VerReserva(id) {
+        $("#OperBody").html('');
+        $("#OperBody").load('@Url.Action("Details", "Reservaciones")' + '/' + id);
+        $('#OperModal').modal('show');
+    }
+
+    function BorraReserva(id) {
+
+        var result = confirm("¿Está seguro que desea eliminar la Reservación?");
+        if (result == true) {
+            console.log('Confirma la Eliminación');
+            var IDSala = $("#ListSala").val();
+
+              $.ajax({
+                    url: '@Url.Action("DeleteReserva", "Reservaciones")' + '/' + id,
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                  success: function (data) {
+                      console.log(data.Mensaje);
+                      VerAgenda(IDSala);
+                      $('#OperModal').modal('hide');
+                    },
+                    error: function (data) {
+                        console.log("ocurrio un error al Eliminar");
+                    }
+                });
+
+        } else {
+            console.log('Cancela la Eliminación');
+        }
+    }
+
+     function VerAgenda(id) {
+         $("#AgendaBody").html('');
+         $("#AgendaBody").load('@Url.Action("Agenda", "Reservaciones")' + '/' + id);
+    }
+</script>
+

@@ -1,0 +1,48 @@
+﻿@model AgendaSalas.Models.Areas
+
+@{
+    ViewBag.Title = "Areas";
+}
+
+<div class="form-group">
+    <div class="col-md-6">
+        <h4>Esta seguro que desea eliminar esta Area?</h4>
+    </div>
+    <div class="col-md-5"></div>
+    <div class="col-md-1">
+        <a href="@Url.Action("Index", "Areas")" data-toggle="tooltip" title="Volver al Menu" class="btn btn-default">
+            <span class="glyphicon glyphicon-step-backward"></span> Atras
+        </a>
+    </div>
+</div>
+
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DescArea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescArea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sucursales.DescSucursal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sucursales.DescSucursal)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" />
+        </div>
+    }
+</div>

@@ -1,0 +1,170 @@
+﻿@model AgendaSalas.Models.Reservacion
+
+@{
+    ViewBag.Title = "Reservaciones";
+}
+
+
+ <div class="form-horizontal">
+        <h4>Modifica Reservación</h4>
+        <hr />
+        <form id="Create-form">
+
+            <div class="form-group">
+                @Html.Label("Sala", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("IDSala", null, htmlAttributes: new { @class = "form-control" })
+                    <span class="AlertaDanger" id="IDSalaVal"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Solicitante", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("IDUsuario", null, htmlAttributes: new { @class = "form-control" })
+                    <span class="AlertaDanger" id="IDUsuarioVal"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DescReserv, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DescReserv, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                    <span class="AlertaDanger" id="DescReservVal"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DTInicio, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DTInicio, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                    <span class="AlertaDanger" id="DTInicioVal"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DTFin, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DTFin, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                    <span class="AlertaDanger" id="DTFinVal"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Guardar" class="btn btn-default" />
+                    <span class="AlertaDanger" id="MensajeError"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+ <script>
+     $(document).ready(function () {
+        var FechaValida = true;
+        $("#DTInicio").datetimepicker();
+        $("#DTFin").datetimepicker();
+        $.datetimepicker.setLocale('es');
+
+        $("#DescReserv").keyup(function () {
+            $("#DescReservVal").html('');
+        });
+
+        $("#DTInicio").change(function () {
+            $("#DTInicioVal").html('');
+        });
+
+        $("#DTFin").change(function () {
+            $("#DTFinVal").html('');
+        });
+
+        $("#Create-form").submit(function (event) {
+            event.preventDefault();
+
+            var IDReservacion = @Model.IDReservacion;
+            var IDSala        = $("#IDSala").val();
+            var IDUsuario     = $("#IDUsuario").val();
+            var DescReserv    = $("#DescReserv").val();
+            var DTInicio      = $("#DTInicio").val();
+            var DTFin         = $("#DTFin").val();
+            var DTRegistro    = '@Model.DTRegistro';
+            var Estatus       = '@Model.Estatus';
+
+            ///////////////////////////////////////////////////////////
+            if ($("#DescReserv").val().length === 0) {
+                $("#DescReservVal").html('');
+                $("#DescReservVal").append('Este campo es Obligatorio');
+            }
+
+            if ($("#DescReserv").val().length > 50) {
+                $("#DescReservVal").html('');
+                $("#DescReservVal").append('Maximo 50 caracteres');
+            }
+
+            if ($("#DTInicio").val().length === 0) {
+                $("#DTInicioVal").html('');
+                $("#DTInicioVal").append('Este campo es Obligatorio');
+            }
+
+            if ($("#DTFin").val().length === 0) {
+                $("#DTFinVal").html('');
+                $("#DTFinVal").append('Este campo es Obligatorio');
+            }
+
+            //validar que la fecha de inicio no sea mayor a la final
+            if ($("#DTInicio").val() > $("#DTFin").val()) {
+                $("#DTInicioVal").html('');
+                $("#DTInicioVal").append('La fecha de inicio no puede ser mayor a la fecha de fin');
+                FechaValida = false;
+            }
+            else {
+                FechaValida = true;
+            }
+
+            if ($("#DescReserv").val().length != 0 && $("#DescReserv").val().length <= 50 &&
+                $("#DTInicio").val().length != 0 && $("#DTFin").val().length != 0 &&
+                FechaValida == true) {
+
+                //inserta sin validar la fecha de egreso//
+                $.ajax({
+                    url: '@Url.Action("EditReserva", "Reservaciones")',
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        IDReservacion,
+                        IDSala,
+                        IDUsuario,
+                        DescReserv,
+                        DTInicio,
+                        DTFin,
+                        DTRegistro,
+                        Estatus
+                    }),
+                    success: function (data) {
+                        if (data.Result == true) {
+                            console.log("reservación Guardada correctamente");
+                            VerAgenda(IDSala);
+                            $('#OperModal').modal('hide');
+                        }
+                        else {
+                            $("#MensajeError").html('');
+                            $("#MensajeError").append(data.Mensaje);
+                        }
+                    },
+                    error: function () {
+                        console.log("No pudo acceder al Metodo");
+                    }
+                });
+
+                console.log("Validación Correcta");
+            }
+            else {
+                console.log("Validación Incorrecta");
+            }
+
+        });
+
+    });
+ </script>

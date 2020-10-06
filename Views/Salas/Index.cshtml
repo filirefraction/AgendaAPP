@@ -1,0 +1,106 @@
+﻿@model IEnumerable<AgendaSalas.Models.Salas>
+
+@{
+    ViewBag.Title = "Salas";
+}
+
+<h3>Administración de Salas</h3>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-6">
+            <a href="@Url.Action("Create", "Salas")" data-toggle="tooltip" title="Nueva Sala" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo
+            </a>
+        </div>
+        <div class="col-md-5"></div>
+        <div class="col-md-1">
+            <a href="@Url.Action("Menu", "Home")" data-toggle="tooltip" title="Volver al Menu" class="btn btn-default">
+                <span class="glyphicon glyphicon-step-backward"></span> Atras
+            </a>
+        </div>
+    </div>
+</div>
+
+<table id="salastab" class="display">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DescSala)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EspecificaHorario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraInicial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraFinal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observaciones)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Areas.DescArea)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescSala)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EspecificaHorario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraInicial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraFinal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observaciones)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Areas.DescArea)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", "Salas", new { id = item.IDSala })" data-toggle="tooltip" title="Editar Sala" class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    <a href="@Url.Action("Details", "Salas", new { id = item.IDSala })" data-toggle="tooltip" title="Detalles de Sala" class="btn btn-default">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    <a href="@Url.Action("Delete", "Salas", new { id = item.IDSala })" data-toggle="tooltip" title="Eliminar Sala" class="btn btn-default">
+                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#salastab').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+            },
+            scrollY: '50vh',
+            scrollCollapse: true,
+            paging: false
+        });
+    });
+</script>

@@ -1,0 +1,81 @@
+﻿@model AgendaSalas.Models.Reservacion
+
+@{
+    ViewBag.Title = "Reservaciones";
+}
+
+
+<div>
+    <h4>Detalles de Reservación</h4>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button onclick="EditaReserva(@Model.IDReservacion)" data-toggle="tooltip" title="Editar Reservación" class="btn btn-default">
+                <span class='glyphicon glyphicon-edit'></span>
+            </button>
+            <button onclick="BorraReserva(@Model.IDReservacion)" data-toggle="tooltip" title="Ver Reservación" class="btn btn-default">
+                <span class='glyphicon glyphicon glyphicon-trash'></span>
+            </button>
+        </div>
+    </div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DescReserv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescReserv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DTInicio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DTInicio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DTFin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DTFin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DTRegistro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DTRegistro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Salas.DescSala)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Salas.DescSala)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Solicitante")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Usuarios.UsuarioNombre)&ensp;
+            @Html.DisplayFor(model => model.Usuarios.UsuarioApellido1)&ensp;
+            @Html.DisplayFor(model => model.Usuarios.UsuarioApellido2)
+        </dd>
+    </dl>
+
+</div>

@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Menu";
+}
+
+
+<div class="jumbotron">
+    <h3>Bienvenido (a) a Reservacion de Salas</h3>
+</div>
+
+<div class="wrapperP" style="margin-bottom: 15px;">
+    <a href="@Url.Action("Index", "Reservaciones")"> Reservaciones  </a>
+</div>
+@if (Session["IdUsuario"] != null)
+{
+    if (Session["IdUsuario"].ToString() == "1")
+    {
+        <div class="wrapper">
+            <a href="@Url.Action("Index", "Usuarios")"> Usuarios  </a>
+            <a href="@Url.Action("Index", "Sucursales")"> Sucursales  </a>
+            <a href="@Url.Action("Index", "Areas")"> Areas     </a>
+            <a href="@Url.Action("Index", "Salas")"> Salas      </a>
+        </div>
+    }
+}
+
+
